@@ -466,9 +466,15 @@ module Roby
 
         class DumbManager
             def self.local_object(obj)
-                if obj.respond_to?(:proxy)
-                    obj.proxy(self)
-                else obj
+                begin
+                    if obj.respond_to?(:proxy)
+                        return obj.proxy(self)
+                    else 
+                        return obj
+                    end
+                rescue Exception => e
+                    ::Robot.warn "Workaround proxy here"
+                    return obj
                 end
             end
 
